@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Monitoreo ODS</title>
+
+<style>
+
+body{
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    font-family:Arial;
+    margin-top:80px;
+}
+
+h1{
+    font-size:50px;
+}
+
+#estado{
+    font-size:80px;
+    font-weight:bold;
+    margin-top:50px;
+}
+
+.ok{
+    color:#22c55e;
+}
+
+.down{
+    color:#ef4444;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink{
+    50%{
+        opacity:0.3;
+    }
+}
+
+#hora{
+    margin-top:40px;
+    font-size:30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>MONITOREO ODS - INEI</h1>
+
+<div id="estado" class="ok">
+OPERATIVO
+</div>
+
+<div id="hora">
+Esperando validación...
+</div>
+
+<audio id="alarma" loop>
+  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">
+</audio>
+
+<script>
+
+const URL = "https://ods.inei.gob.pe/";
+
+async function verificar(){
+
+    try{
+
+        await fetch(URL, {
+            mode:'no-cors'
+        });
+
+        document.getElementById("estado").innerHTML = "OPERATIVO";
+        document.getElementById("estado").className = "ok";
+
+        document.getElementById("hora").innerHTML =
+        "Última validación: " + new Date().toLocaleTimeString();
+
+        document.getElementById("alarma").pause();
+
+    }
+    catch(error){
+
+        document.getElementById("estado").innerHTML = "SISTEMA CAÍDO";
+        document.getElementById("estado").className = "down";
+
+        document.getElementById("hora").innerHTML =
+        "Caída detectada: " + new Date().toLocaleTimeString();
+
+        document.getElementById("alarma").play();
+
+    }
+
+}
+
+setInterval(verificar, 5000);
+
+verificar();
+
+</script>
+
+</body>
+</html>
