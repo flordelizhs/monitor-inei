@@ -5,26 +5,46 @@
 
 <meta charset="UTF-8">
 
-<title>Monitoreo ODS</title>
+<title>Centro de Monitoreo ODS - INEI</title>
 
 <style>
 
 body{
+    margin:0;
     background:#0f172a;
     color:white;
-    text-align:center;
     font-family:Arial;
-    margin-top:80px;
 }
 
-h1{
-    font-size:50px;
+.header{
+    background:#111827;
+    padding:25px;
+    text-align:center;
+    border-bottom:4px solid #2563eb;
+}
+
+.header h1{
+    margin:0;
+    font-size:48px;
+}
+
+.sub{
+    margin-top:10px;
+    font-size:22px;
+    color:#cbd5e1;
+}
+
+.panel{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:70vh;
+    flex-direction:column;
 }
 
 #estado{
-    font-size:80px;
+    font-size:120px;
     font-weight:bold;
-    margin-top:50px;
 }
 
 .ok{
@@ -42,9 +62,20 @@ h1{
     }
 }
 
-#hora{
+#detalle{
     margin-top:40px;
-    font-size:30px;
+    font-size:35px;
+}
+
+.footer{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#111827;
+    text-align:center;
+    padding:15px;
+    font-size:22px;
+    color:#94a3b8;
 }
 
 </style>
@@ -53,14 +84,27 @@ h1{
 
 <body>
 
-<h1>MONITOREO ODS - INEI</h1>
-
-<div id="estado" class="ok">
-OPERATIVO
+<div class="header">
+    <h1>CENTRO DE MONITOREO ODS</h1>
+    <div class="sub">
+        Instituto Nacional de Estadística e Informática
+    </div>
 </div>
 
-<div id="hora">
-Esperando validación...
+<div class="panel">
+
+    <div id="estado" class="ok">
+        OPERATIVO
+    </div>
+
+    <div id="detalle">
+        Validando disponibilidad...
+    </div>
+
+</div>
+
+<div class="footer">
+    Monitoreo Externo Internet | Actualización cada 5 segundos
 </div>
 
 <audio id="alarma" loop>
@@ -82,10 +126,13 @@ async function verificar(){
         document.getElementById("estado").innerHTML = "OPERATIVO";
         document.getElementById("estado").className = "ok";
 
-        document.getElementById("hora").innerHTML =
-        "Última validación: " + new Date().toLocaleTimeString();
+        document.getElementById("detalle").innerHTML =
+        "Última validación exitosa: "
+        + new Date().toLocaleTimeString();
 
         document.getElementById("alarma").pause();
+
+        document.body.style.background="#0f172a";
 
     }
     catch(error){
@@ -93,10 +140,13 @@ async function verificar(){
         document.getElementById("estado").innerHTML = "SISTEMA CAÍDO";
         document.getElementById("estado").className = "down";
 
-        document.getElementById("hora").innerHTML =
-        "Caída detectada: " + new Date().toLocaleTimeString();
+        document.getElementById("detalle").innerHTML =
+        "Sin respuesta detectada: "
+        + new Date().toLocaleTimeString();
 
         document.getElementById("alarma").play();
+
+        document.body.style.background="#3f0000";
 
     }
 
@@ -109,4 +159,5 @@ verificar();
 </script>
 
 </body>
+
 </html>
