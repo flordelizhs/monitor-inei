@@ -78,19 +78,33 @@ body{
 
     border:5px solid #64748b;
 
-    transition:0.5s;
+    transition:0.4s;
 
     box-shadow:0 0 25px rgba(0,0,0,0.4);
+
+    cursor:pointer;
+
+    text-decoration:none;
+
+}
+
+.hex:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:0 0 35px #2563eb;
 
 }
 
 .nombre{
 
-    font-size:40px;
+    font-size:38px;
 
     font-weight:bold;
 
     letter-spacing:2px;
+
+    text-align:center;
 
 }
 
@@ -101,6 +115,22 @@ body{
     font-size:22px;
 
     font-weight:bold;
+
+}
+
+.link{
+
+    margin-top:15px;
+
+    font-size:14px;
+
+    color:#cbd5e1;
+
+    text-align:center;
+
+    width:80%;
+
+    word-break:break-word;
 
 }
 
@@ -205,7 +235,7 @@ Monitoreo de Sistemas Críticos
 <div class="grid" id="grid"></div>
 
 <div class="footer">
-Seguridad Informática - OTIN/INEI - 2026
+Monitoreo de Lanzamiento ODS: 06 y 07 de Mayo 2026
 </div>
 
 <div class="alertaTexto" id="alertaTexto">
@@ -239,18 +269,22 @@ url:"https://aplications.inei.gob.pe"
 {
 nombre:"CPV25",
 url:"https://censos2025.inei.gob.pe"
-}
+},
 
 {
 nombre:"RENAMU",
 url:"https://renamu.inei.gob.pe/2026/#/login/mon"
-}
+},
+
+{
+nombre:"PORTALEEA",
+url:"https://portaleea.inei.gob.pe/"
+},
 
 {
 nombre:"POSCENSAL",
 url:"https://postcensalcpv.inei.gob.pe/apareamiento-de-datos-epc-frontend/login/login"
 }
-    
 
 ];
 
@@ -311,7 +345,12 @@ sistemas.forEach((sistema,index)=>{
 
 grid.innerHTML += `
 
-<div class="hex validando" id="panel-${index}">
+<a
+href="${sistema.url}"
+target="_blank"
+class="hex validando"
+id="panel-${index}"
+>
 
 <div class="nombre">
 ${sistema.nombre}
@@ -321,7 +360,11 @@ ${sistema.nombre}
 VALIDANDO
 </div>
 
+<div class="link">
+ABRIR SISTEMA
 </div>
+
+</a>
 
 `;
 
@@ -336,8 +379,11 @@ return new Promise((resolve,reject)=>{
 const controller = new AbortController();
 
 const timeout = setTimeout(() => {
+
 controller.abort();
+
 reject(false);
+
 }, 5000);
 
 fetch(url, {
